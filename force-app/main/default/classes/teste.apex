@@ -1,2 +1,2 @@
-String resultado = ClienteService.cadastrarCliente('Empresa Tesla');
-System.debug(resultado);
+String resultadoExclusao = ClienteService.excluirCliente('Empresa Google');
+System.debug(resultadoExclusao);

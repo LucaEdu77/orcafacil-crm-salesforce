@@ -16,11 +16,62 @@ public with sharing class ClienteService { //Classe responsavel pelas regras de 
         ]; 
 
         if (clientesExistentes.isEmpty()) { //Verifica se a lista de clientes existentes está vazia, ou seja, se não existe nenhum cliente com o mesmo nome no sistema.
+
             insert cliente;
+            
             return 'Cliente cadastrado com sucesso.';
         } else { 
             System.debug('Cliente já cadastrado.');
             return 'Cliente já cadastrado.';
         }
     }   
-}
+    public static List<Account> buscarClientesPorNome(String nomeCliente) { //Metodo responsavel por buscar clientes no sistema, recebendo como parametro o nome do cliente.
+
+        List<Account> buscarClientes = [ //Consulta para buscar clientes no sistema pelo nome.
+            SELECT Id, Name, Phone, Website 
+            FROM Account 
+            WHERE Name = :nomeCliente 
+        ];
+
+        return buscarClientes; //Retorna a lista de clientes encontrados.
+    }
+    public static String atualizarCliente(
+        String nomeCliente, 
+        String novoTelefone, 
+        String novoSite
+    ) { //Metodo responsavel por atualizar um cliente no sistema, recebendo como parametro o id do cliente.
+
+        List<Account> clientesExistentes = [ //Consulta para verificar se já existe um cliente com o mesmo nome no sistema.
+            SELECT Id, Name, Phone, Website 
+            FROM Account 
+            WHERE Name = :nomeCliente
+        ];
+        if (!clientesExistentes.isEmpty()) {
+            Account cliente = clientesExistentes [0]; //Pega o primeiro cliente encontrado na lista de clientes existentes.
+            cliente.Phone = novoTelefone; //Atualiza o telefone do cliente.
+            cliente.Website = novoSite; //Atualiza o site do cliente.
+
+            update cliente;
+
+            return 'Cliente atualizado com sucesso.';
+        } else {
+            return 'Cliente não encontrado.';
+        }
+    }
+    public static String excluirCliente(String nomeCliente) {
+        List<Account> clientesExistentes = [ //Consulta para verificar se já existe um cliente com o mesmo nome no sistema.
+            SELECT Id, Name 
+            FROM Account 
+            WHERE Name = :nomeCliente
+        ];
+        if (!clientesExistentes.isEmpty()) {
+            Account cliente = clientesExistentes [0];
+
+            delete cliente;
+
+            return 'Cliente excluído com sucesso.';
+        } else {
+            return 'Cliente não encontrado.';
+        }
+    }
+}    
