@@ -9,8 +9,8 @@ public with sharing class ClienteService { //Classe responsavel pelas regras de 
         cliente.Website = siteCliente; //Atribui o site do cliente ao objeto Account
 
         List<Account> clientesExistentes = [ //Consulta para verificar se já existe um cliente com o mesmo nome no sistema.
-            SELECT Id, Name //Seleciona os campos Id e Name da tabela Account.
-            FROM Account //Seleciona a tabela Account.
+            SELECT Id, Name 
+            FROM Account 
             WHERE Name = :nomeCliente
             //Filtra os registros da tabela Account pelo nome do cliente recebido como parametro.
         ]; 
@@ -18,10 +18,9 @@ public with sharing class ClienteService { //Classe responsavel pelas regras de 
         if (clientesExistentes.isEmpty()) { //Verifica se a lista de clientes existentes está vazia, ou seja, se não existe nenhum cliente com o mesmo nome no sistema.
 
             insert cliente;
-            
+
             return 'Cliente cadastrado com sucesso.';
         } else { 
-            System.debug('Cliente já cadastrado.');
             return 'Cliente já cadastrado.';
         }
     }   
