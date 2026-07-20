@@ -71,4 +71,22 @@ public with sharing class OrcamentoService {
             return 'Orçamento não encontrado.';
         }
     }
+    public static void definirStatusInicial(
+    List<Orcamento__c> novosOrcamentos
+) {
+    for (Orcamento__c orcamento : novosOrcamentos) {
+        if (String.isBlank(orcamento.Status__c)) {
+            orcamento.Status__c = 'Em Aberto';
+            }
+        }
+    }
+
+    public static void validarValorTotal(
+        List<Orcamento__c> novosOrcamentos
+    ){
+     for (Orcamento__c orcamento : novosOrcamentos)
+        if (orcamento.Valor_Total__c <= 0) {
+            orcamento.addError('O valor total do orçamento deve ser maior que zero');            
+        }
+    }
 }
